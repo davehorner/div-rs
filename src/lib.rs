@@ -1,3 +1,5 @@
+// use wasm_bindgen::prelude::*; // No longer needed: no #[wasm_bindgen] exports in this crate
+// No public reset/unmount API. Examples must use only the public API and manage their own cleanup.
 use std::{future::Future, sync::RwLock};
 use web_sys::Element;
 
@@ -205,4 +207,12 @@ impl JsClass {
     pub fn preregistered(name: &str) -> Option<JsClassHandle> {
         state::exec_mut(|state| Ok(state.classes.preloaded(name))).unwrap()
     }
+}
+
+use wasm_bindgen::prelude::*;
+
+/// Resets the global div state, allowing re-initialization (for example switching)
+#[wasm_bindgen]
+pub fn reset_global_div_state() {
+    state::clear_state();
 }

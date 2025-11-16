@@ -1,20 +1,24 @@
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen(start)]
+#[wasm_bindgen]
 pub fn main() {
-    div::init_to("div-root").unwrap();
     set_panic_hook();
 
-    // Create a new pane at offset (100,100) from body
-    // with size 500px/500px and then create a single
-    // text node inside it with an external class stored in TODO
+    // Defensive: check for double initialization
+    match div::init_to("div-root") {
+        Ok(_) => {},
+        Err(e) => {
+            panic!("[hello_svelte] div::init_to('div-root') failed: {e:?}.\nThis usually means main() was called without a prior reset, or reset did not complete before main().");
+        }
+    }
+
     const X: u32 = 0;
     const Y: u32 = 0;
     const W: u32 = 500;
     const H: u32 = 500;
     let class = div::JsClass::preregistered("MyComponent")
-        .expect("JS class Test has not been registered properly");
-    div::from_js_class(X as i32, Y as i32, W, H, class).unwrap();
+        .unwrap_or_else(|| panic!("[hello_svelte] Svelte component 'MyComponent' is not registered.\n\nMake sure register_svelte_component('MyComponent', ...) is called in JS before calling main()."));
+    div::from_js_class(X as i32, Y as i32, W, H, class).expect("[hello_svelte] div::from_js_class failed");
 
     /* Alternative that loads classes from a separate JS file instead of registering in the JS code. */
     // let future = async {
@@ -24,6 +28,11 @@ pub fn main() {
     // wasm_bindgen_futures::spawn_local(future);
 }
 
+#[wasm_bindgen]
+pub fn reset() {
+    div::reset_global_div_state();
+}
+
 pub fn set_panic_hook() {
     // When the `console_error_panic_hook` feature is enabled, we can call the
     // `set_panic_hook` function at least once during initialization, and then
@@ -31,5 +40,6 @@ pub fn set_panic_hook() {
     //
     // For more details see
     // https://github.com/rustwasm/console_error_panic_hook#readme
-    // console_error_panic_hook::set_once();
+    #[cfg(feature = "console_error_panic_hook")] 
+    console_error_panic_hook::set_once();
 }

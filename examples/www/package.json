@@ -20,7 +20,8 @@
         "build:webpack": "webpack --config webpack.config.js",
         "start": "webpack-dev-server",
         "release": "npm-run-all build:wasm release:webpack",
-        "release:webpack": "webpack --config webpack.prod.js"
+        "release:webpack": "webpack --config webpack.prod.js",
+        "rebuild": "npm run clean && npm run build && npm start"
     },
     "repository": {
         "type": "git",
@@ -32,15 +33,21 @@
         "rust",
         "webpack"
     ],
-    "author": "Jakob Meier <inbox@jakobmeier.ch",
+    "author": "Jakob Meier <inbox@jakobmeier.ch>",
+    "contributors": [
+        "David Horner"
+    ],
     "license": "(MIT OR Apache-2.0)",
     "bugs": {
         "url": "https://github.com/jakmeier/div-rs/issues"
     },
     "homepage": "https://github.com/jakmeier/div-rs#readme",
     "dependencies": {
+        "gif.js": "^0.2.0",
         "hello_svelte": "file:../hello_svelte/pkg",
         "hello_world": "file:../hello_world/pkg",
+        "html2canvas": "^1.4.1",
+        "prismjs": "^1.30.0",
         "reposition": "file:../reposition/pkg/",
         "styled": "file:../styled/pkg/",
         "toggle": "file:../toggle/pkg/"

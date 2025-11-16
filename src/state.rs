@@ -16,11 +16,6 @@ thread_local! {
     static S_STATE: RwLock<Option<GlobalState<PaneHashMap, JsClassStorage>>> = RwLock::default();
 }
 
-// pub (crate) fn get<'a>() -> Result<RwLockReadGuard<'a, Option<GlobalState<PaneHashMap, JsClassStorage>>>, DivError>
-// pub(crate) fn get(
-// ) -> Result<RwLockReadGuard<'a, Option<GlobalState<PaneHashMap, JsClassStorage>>>, DivError> {
-//     S_STATE.with(|state| state.read().map_err(|_e| DivError::Locked))
-// }
 
 pub(crate) fn set_state(
     new_state: GlobalState<PaneHashMap, JsClassStorage>,
@@ -64,4 +59,11 @@ where
         let mut state = state.write().map_err(|_e| DivError::Locked)?;
         f(state.as_mut().as_mut().ok_or(DivError::NotInitialized)?)
     })
+}
+/// Clears the global state, allowing re-initialization.
+pub(crate) fn clear_state() {
+    S_STATE.with(|state| {
+        let mut state = state.write().expect("Lock failed");
+        *state = None;
+    });
 }

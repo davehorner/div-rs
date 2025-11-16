@@ -2,7 +2,7 @@
 [package]
 name = "styled"
 version = "0.1.0"
-authors = ["Jakob Meier <inbox@jakobmeier.ch>"]
+authors = ["Jakob Meier <inbox@jakobmeier.ch>", "David Horner"]
 edition = "2018"
 
 [lib]

@@ -28,7 +28,10 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin({
-            patterns: ['index.html']
+            patterns: [
+                'index.html',
+                { from: 'node_modules/gif.js/dist/gif.worker.js', to: '.' }
+            ]
         })
     ],
     experiments: {

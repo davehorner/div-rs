@@ -33,3 +33,4 @@ features = [
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
 wasm-bindgen-futures = "0.4"
+

@@ -25,7 +25,11 @@ The features can be summarized as:
 
 The examples in this crate are hosted online: [div-rs Examples](https://div.paddlers.ch/)
 
-Have a look at the code in example directory. The best way is to clone the repository and run it locally, so you can play around with the code.
+Below is an example of the output you can generate with the built-in GIF capture tool:
+
+![Animated Example Output](./div-rs-captured-frames.gif)
+
+Have a look at the code in the example directory. The best way is to clone the repository and run it locally, so you can play around with the code and generate your own GIFs.
 
 
 ## Requirements (2025+)

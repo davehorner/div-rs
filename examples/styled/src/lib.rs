@@ -45,6 +45,11 @@ pub fn main() {
     let _pane1 = div::new_styled(125, 300, 200, 100, html1, &classes, &css).unwrap();
 }
 
+#[wasm_bindgen]
+pub fn reset() {
+    div::reset_global_div_state();
+}
+
 // Small helper function, only for the example. Uses stdweb, DIV-RS does not really help you with this part of CSS.
 // It is not recommended to add classes like this but it is useful here to keep everything in a single file.
 fn add_document_styles(css: &str) {

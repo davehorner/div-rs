@@ -2,7 +2,7 @@
 [package]
 name = "hello_svelte"
 version = "0.1.0"
-authors = ["Jakob Meier <inbox@jakobmeier.ch>"]
+authors = ["Jakob Meier <inbox@jakobmeier.ch>", "David Horner"]
 edition = "2018"
 
 [lib]
@@ -10,6 +10,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 div = { path = "../../" }
+gloo-timers = "0.3.0"
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 
