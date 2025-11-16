@@ -4,7 +4,8 @@
  * Usually we would have your styles served from a .css or inside a svelte component.
  * But if you want to, you can also apply CSS to a pane from within Rust.
  */
-use stdweb::web::*;
+use wasm_bindgen::JsCast;
+use web_sys::{window, HtmlStyleElement};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(start)]
@@ -47,9 +48,14 @@ pub fn main() {
 // Small helper function, only for the example. Uses stdweb, DIV-RS does not really help you with this part of CSS.
 // It is not recommended to add classes like this but it is useful here to keep everything in a single file.
 fn add_document_styles(css: &str) {
-    let head = document().head().unwrap();
-    let style = document().create_element("style").unwrap();
-    style.set_attribute("type", "text/css").unwrap();
-    style.append_html(css).unwrap();
-    head.append_child(&style);
+    let document = window().unwrap().document().unwrap();
+    let head = document.head().unwrap();
+    let style = document
+        .create_element("style")
+        .unwrap()
+        .dyn_into::<HtmlStyleElement>()
+        .unwrap();
+    style.set_type("text/css");
+    style.set_inner_html(css);
+    head.append_child(&style).unwrap();
 }

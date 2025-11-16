@@ -7,13 +7,13 @@
 
 import "./styles.css";
 
-import * as hello_world from "../hello_world/pkg/hello_world_bg.wasm";
-import * as reposition from "../reposition/pkg/reposition_bg.wasm";
-import * as styled from "../styled/pkg/styled_bg.wasm";
-import * as toggle from "../toggle/pkg/toggle_bg.wasm";
 
+import * as hello_world from "../hello_world/pkg/hello_world.js";
+import * as reposition from "../reposition/pkg/reposition.js";
+import * as styled from "../styled/pkg/styled.js";
+import * as toggle from "../toggle/pkg/toggle.js";
 
-import * as hello_svelte from "../hello_svelte/pkg/hello_svelte_bg.wasm";
+import * as hello_svelte from "../hello_svelte/pkg/hello_svelte.js";
 import { register_svelte_component, init_div_rs } from "../../div-rs.js";
 import MyComponent from "../hello_svelte/src/MyComponent.svelte";
 
@@ -74,6 +74,7 @@ examples.push(example(
     }));
 
 loadExampleSelection(examples);
+
 
 let params = new URLSearchParams(location.search);
 let displayedExample = params.get('example');

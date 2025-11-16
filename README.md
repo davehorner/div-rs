@@ -27,13 +27,49 @@ The examples in this crate are hosted online: [div-rs Examples](https://div.padd
 
 Have a look at the code in example directory. The best way is to clone the repository and run it locally, so you can play around with the code.
 
-You need npm, webpack, and wasm-pack for the examples to run on your machine.
+
+## Requirements (2025+)
+
+You need Node.js (16+ recommended), npm, and [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) for the examples to run on your machine.
+
+**This project now uses Webpack 5 for modern WebAssembly support.**
+
+### Setup and Usage
+
+1. Clone the repository:
+	```sh
+	git clone https://github.com/jakmeier/div-rs.git
+	cd div-rs/examples/www
+	```
+2. Install dependencies (this will install Webpack 5 and all required loaders/plugins):
+	```sh
+	npm install
+	```
+3. Build all Rust WASM examples and bundle with Webpack:
+	```sh
+	npm run build
+	```
+4. Start the development server:
+	```sh
+	npm start
+	```
+5. Open your browser to the address shown in the terminal (usually http://localhost:8080).
+
+### Cleaning builds
+
+To clean all Rust and JS build artifacts:
+```sh
+npm run clean
 ```
-git clone https://github.com/jakmeier/div-rs.git
-cd div-rs/examples/www;
-npm run build;
-npm run start;
-```
+
+### Notable Changes (2025)
+
+- **Webpack 5 migration:** The project now uses Webpack 5 for native async WebAssembly support. All config and dependencies have been updated.
+- **No more stdweb:** All examples now use `web-sys`, `wasm-bindgen`, and (where needed) `gloo-timers` for browser interop. `stdweb` is no longer supported.
+- **Svelte loader:** The Webpack config now includes `resolve.conditionNames` for Svelte 3+ compatibility.
+- **CopyWebpackPlugin:** Updated to use the new `patterns` API.
+
+If you see WASM loader or Svelte warnings, make sure you have the latest dependencies and configs as above.
 
 ## Origin and Motivation
 My motivation to create Div was to leverage HTML + CSS when using Rust to create games for a browser.

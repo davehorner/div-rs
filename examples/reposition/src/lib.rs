@@ -1,6 +1,5 @@
-use stdweb::js;
-use stdweb::traits::*;
-use stdweb::web::event::KeyDownEvent;
+use wasm_bindgen::JsCast;
+use web_sys::window;
 use wasm_bindgen::prelude::*;
 
 /**
@@ -56,42 +55,51 @@ pub fn main() {
     let mut f = 1.0;
     let mut af = 1.0;
 
-    // We are using webstd here to make things easy.
-    // Listen to arrow key to move and reposition all div
-    stdweb::web::document().add_event_listener(move |e: KeyDownEvent| {
-        match e.key().as_str() {
-            "ArrowUp" => y = y.saturating_sub(10),
-            "ArrowDown" => y += 10,
-            "ArrowLeft" => x = x.saturating_sub(10),
-            "ArrowRight" => x += 10,
-            "+" => f *= 1.5,
-            "-" => f /= 1.5,
+    // Listen to keydown events to move and reposition all divs
+    let closure = Closure::wrap(Box::new(move |event: web_sys::Event| {
+        let keyboard_event = event.dyn_ref::<web_sys::KeyboardEvent>();
+        if let Some(e) = keyboard_event {
+            let key = e.key();
+            match key.as_str() {
+                "ArrowUp" => y = y.saturating_sub(10),
+                "ArrowDown" => y += 10,
+                "ArrowLeft" => x = x.saturating_sub(10),
+                "ArrowRight" => x += 10,
+                "+" => f *= 1.5,
+                "-" => f /= 1.5,
 
-            "w" => ay = ay.saturating_sub(10),
-            "a" => ax = ax.saturating_sub(10),
-            "s" => ay += 10,
-            "d" => ax += 10,
-            "1" => af *= 1.5,
-            "2" => af /= 1.5,
+                "w" => ay = ay.saturating_sub(10),
+                "a" => ax = ax.saturating_sub(10),
+                "s" => ay += 10,
+                "d" => ax += 10,
+                "1" => af *= 1.5,
+                "2" => af /= 1.5,
 
-            key => {
-                js! { @(no_return) console.log("pressed " + @{key}); };
-                return;
+                _ => {
+                    web_sys::console::log_1(&format!("pressed {}", key).into());
+                    return;
+                }
             }
-        }
-        div::reposition(x, y).unwrap();
-        let w = f * w as f32;
-        let h = f * h as f32;
-        div::resize(w as u32, h as u32).unwrap();
+            div::reposition(x, y).unwrap();
+            let w = f * w as f32;
+            let h = f * h as f32;
+            div::resize(w as u32, h as u32).unwrap();
 
-        let aw = af * aw as f32;
-        let ah = af * ah as f32;
-        pane_a
-            .reposition_and_resize(ax, ay, aw as u32, ah as u32)
-            .unwrap();
-        // Same as
-        // pane_a.reposition(ax,ay).unwrap();
-        // pane_a.resize(aw as u32, ah as u32).unwrap();
-        // but avoids extra redraw of div
-    });
+            let aw = af * aw as f32;
+            let ah = af * ah as f32;
+            pane_a
+                .reposition_and_resize(ax, ay, aw as u32, ah as u32)
+                .unwrap();
+            // Same as
+            // pane_a.reposition(ax,ay).unwrap();
+            // pane_a.resize(aw as u32, ah as u32).unwrap();
+            // but avoids extra redraw of div
+        }
+    }) as Box<dyn FnMut(_)>);
+
+    window()
+        .unwrap()
+        .add_event_listener_with_callback("keydown", closure.as_ref().unchecked_ref())
+        .unwrap();
+    closure.forget();
 }

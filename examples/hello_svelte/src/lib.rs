@@ -14,7 +14,7 @@ pub fn main() {
     const H: u32 = 500;
     let class = div::JsClass::preregistered("MyComponent")
         .expect("JS class Test has not been registered properly");
-    div::from_js_class(X, Y, W, H, class).unwrap();
+    div::from_js_class(X as i32, Y as i32, W, H, class).unwrap();
 
     /* Alternative that loads classes from a separate JS file instead of registering in the JS code. */
     // let future = async {
@@ -31,6 +31,5 @@ pub fn set_panic_hook() {
     //
     // For more details see
     // https://github.com/rustwasm/console_error_panic_hook#readme
-    #[cfg(feature = "console_error_panic_hook")]
-    console_error_panic_hook::set_once();
+    // console_error_panic_hook::set_once();
 }

@@ -1,5 +1,5 @@
 use div::DivHandle;
-use stdweb::web::set_timeout;
+use gloo_timers::callback::Timeout;
 
 use wasm_bindgen::prelude::*;
 
@@ -33,8 +33,7 @@ pub fn main() {
 fn toggle(a: DivHandle, b: DivHandle) {
     a.show().expect("Error");
     b.hide().expect("Error");
-    let closure = move || {
+    Timeout::new(1000, move || {
         toggle(b, a);
-    };
-    set_timeout(closure, 1000);
+    }).forget();
 }

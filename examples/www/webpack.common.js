@@ -10,7 +10,8 @@ module.exports = {
     resolve: {
         extensions: ['.mjs', '.js', '.svelte'],
         mainFields: ['svelte', 'browser', 'module', 'main'],
-        modules: [path.resolve(__dirname, 'node_modules'), 'node_modules']
+        modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
+        conditionNames: ['svelte', 'import', 'require', 'node']
     },
     module: {
         rules: [{
@@ -26,6 +27,11 @@ module.exports = {
         }]
     },
     plugins: [
-        new CopyWebpackPlugin(['index.html'])
+        new CopyWebpackPlugin({
+            patterns: ['index.html']
+        })
     ],
+    experiments: {
+        asyncWebAssembly: true,
+    },
 };

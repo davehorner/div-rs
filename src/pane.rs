@@ -73,7 +73,7 @@ impl<PS: PaneStorage, CS: ClassStorage> GlobalState<PS, CS> {
         Ok(())
     }
     pub(crate) fn show_pane(&mut self, p: &DivHandle) -> Result<(), DivError> {
-        let mut v = self.nodes.get_mut(&p)?;
+        let v = self.nodes.get_mut(&p)?;
         if !v.displayed {
             self.root.append_child(&v.node)?;
             v.displayed = true;
@@ -100,7 +100,7 @@ impl<PS: PaneStorage, CS: ClassStorage> GlobalState<PS, CS> {
         w: Option<u32>,
         h: Option<u32>,
     ) -> Result<(), DivError> {
-        let mut v = self.nodes.get_mut(&pane_handle)?;
+        let v = self.nodes.get_mut(&pane_handle)?;
         v.x = x.unwrap_or(v.x);
         v.y = y.unwrap_or(v.y);
         v.w = w.unwrap_or(v.w);
